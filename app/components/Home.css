@@ -1,0 +1,20 @@
+.container {
+  position: absolute;
+  padding: 8px;
+}
+
+.container a {
+  font-size: 1.4rem;
+}
+
+.whiteWrapper {
+  background-color: #f8fbfc;
+  height: calc(100vh - 40px);
+  width: calc(100vw - 40px);
+  border-radius: 4px;
+}
+
+.groupInfo {
+  color: #7e69fa;
+  display: flex;
+}
