@@ -7,9 +7,10 @@ export const Container = styled.div`
 
 export const WhiteBackground = styled.div`
     background-color: #F8FBFC;
-    height: calc(100vh - 40px);
-    width: calc(100vw - 40px);
+    height: calc(100vh - 64px);
+    width: calc(100vw - 64px);
     border-radius: 4px;
+    padding: 16px;
 `
 
 export const Header1 = styled.h1`

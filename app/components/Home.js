@@ -1,89 +1,83 @@
 // @flow
-import React, { Component } from 'react';
-import { queryUsers } from '../database'
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import styled from 'styled-components'
 
 import {
-  Header1,
-  Header2,
-  TextGroup,
-  Text,
-  ClassInfoWrapper,
-  DateHolder,
   WhiteBackground,
   Container,
   InputWrapper,
   InvisibleInput,
 } from './style'
 
+import ClassInfo from './ClassInfo'
+import StatusDate from './StatusDate'
 import AttendanceTable from './AttendanceTable'
 import { addAttendance } from '../actions/attendance'
+import LogNotes from './LogNotes'
+import SearchFilter from './SearchFilter'
+import StudentListTable from './StudentListTable'
+import AttendanceLogTable from './AttendanceLogTable'
 
-type Props = {};
+const FlexContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
-export class Home extends Component<Props> {
-  props: Props;
+const HeaderGroup = styled.div`
+  margin-bottom: 8px;
+`
+const TableGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const StudentList = styled.div``
+const StudentCard = styled.div`
+  background-color: #FFFFFF;
+`
+
+const Text = styled.span``
+
+export class Home extends PureComponent {
 
   componentDidMount() {
-    this.attendanceInput.focus();
+    // this.attendanceInput.focus();
   }
 
-  enterClass = (query) => {
-    const attendance = {
-      name: `${query.first_name} ${query.last_name}`,
-      enter: Date.now(),
-      exit: null,
-      notes: '',
-      rf_id: query.rfid_code
-    }
-
-    this.props.addAttendance(attendance)
-  }
-
-  onKeyPress = async (event) => {
-    if (event.key === 'Enter') {
-      const query = await queryUsers(event.target.value)
-      this.enterClass(query)
-      this.attendanceInput.value = ''
-    }
-  }
+  // onKeyPress = async (event) => {
+  //   if (event.key === 'Enter') {
+  //     this.props.addAttendance(event.target.value)
+  //     this.attendanceInput.value = ''
+  //   }
+  // }
 
   render() {
     const { attendanceList } = this.props
 
-    return (
+    return ( 
       <Container>
         <WhiteBackground>
-          <ClassInfoWrapper>
-            <TextGroup>
-              <Header1>Professor: </Header1>
-              <Header2>Juan Dela Cruz</Header2>
-            </TextGroup>
-            <TextGroup>
-              <Header1>Subject: </Header1>
-              <Header2>MATH101</Header2>
-            </TextGroup>
-            <TextGroup>
-              <Header1>Class: </Header1>
-              <Header2>BSCS-1A</Header2>
-            </TextGroup>
-            <DateHolder>
-              <Text size={16}>
-                02/25/19 - 9:00 AM to 10:30AM
-              </Text>
-            </DateHolder>
-          </ClassInfoWrapper>
-          <InputWrapper>
-            <InvisibleInput
-              ref={(input) => { this.attendanceInput = input }}
-              onKeyPress={ this.onKeyPress }
-            />
-          </InputWrapper>
-          <AttendanceTable attendanceList={attendanceList}/>
+          <HeaderGroup>
+            <FlexContainer>
+              <ClassInfo />
+              <StatusDate />
+            </FlexContainer>
+            <FlexContainer>
+              <SearchFilter />
+              <LogNotes />
+            </FlexContainer>
+          </HeaderGroup>
+          
+          <TableGroup>
+            <StudentListTable />
+            <AttendanceLogTable />
+          </TableGroup>
         </WhiteBackground>
       </Container>
-    );
+    )
+
   }
 }
 
@@ -95,7 +89,9 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ addAttendance }, dispatch)
+  return bindActionCreators({
+    addAttendance,
+  }, dispatch)
 }
 
 export default connect(
